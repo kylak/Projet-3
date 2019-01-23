@@ -8,43 +8,101 @@
 
 import Foundation
 
+/*
+ TODO:
+- Vérifier l'unicité des pseudos
+- Message d'information
+- Que l'alphanumeric pour les pseudos et au moins 3 caractères sauf s'il contient un chiffre où dans ce ca il n'y a pas de restriction.
+*/
+
 class Game {
     
     var players : [Player]
+    let minimumNbrOfPlayer : Int = 2
+    let maximumNbrOfPlayer : Int = 2
     let nbrOfCharacterPerTeam : Int  = 3
     
     /* How the game init works :
-        We add each player one per one (as many as we want)
+        We add each player one per one (as many as we can)
         when we have finished to add the players, we leave the 'adding mode' using an alphanumeric character
         then we can launch the first round of the game.
     */
     
     init() {
-        print("\nBienvenu dans ce jeu,\n")
         players = []
-        addPlayers()
+        
+        func continueAfterPlayerAdded() {
+            print("\nL'ajout de joueur est terminé.\nOnt été enregsitré les joueurs suivant: ")
+            for tmp in players { print("- " + tmp.pseudo) }
+            print("")
+        }
+        let frenchDetail: String
+        if (minimumNbrOfPlayer == 1) { frenchDetail = "joueur"} else { frenchDetail = "joueurs" }
+        if (minimumNbrOfPlayer == maximumNbrOfPlayer ) {
+            print("\nBienvenue,\nCe jeu ne se joue qu'à \(minimumNbrOfPlayer) \(frenchDetail).")
+            addPlayers()
+            continueAfterPlayerAdded()
+        }
+        else if (maximumNbrOfPlayer == -1) { // -1 means that there's no maximum number of player
+            print("\nBienvenue,\nCe jeu se joue à \(minimumNbrOfPlayer) \(frenchDetail) ou plus.")
+            addPlayers()
+            continueAfterPlayerAdded()
+        }
+        else if (minimumNbrOfPlayer < maximumNbrOfPlayer) {
+            print("\nBienvenue,\nCe jeu se joue au minimum à \(minimumNbrOfPlayer) \(frenchDetail) et au maximum à \(maximumNbrOfPlayer).")
+            addPlayers()
+            continueAfterPlayerAdded()
+        }
+        else { print("\nErreur au niveau des caractéristiques du jeu.") }
     }
     
     func addPlayers() {
-        var command : String // First mod is adding, adding the player
-        repeat {
+        
+        var nbrPlayerCreated : Int = 0
+        
+        func addAditionalPlayer() -> Bool {
+            print("\nSi vous souhaitez ajouter un nouveau joueur, entrez 'n'.\nSinon entrez n'importe quelle autre valeur alphanumérique.")
+            let command : String = getGivenValue()
+            if (command == "n") { // 'n' for new
+                nbrPlayerCreated += 1
+                print("\n## Ajout du \(nbrPlayerCreated)eme joueur ###")
+                addPlayer()
+                return true
+            }
+            return false
+        }
+        
+        while (nbrPlayerCreated < minimumNbrOfPlayer) {
+            var detail : String
+            if( nbrPlayerCreated == 0 ) { detail = "er" } else { detail = "ème" }
+            nbrPlayerCreated += 1
+            print("\n## Ajout du \(nbrPlayerCreated)\(detail) joueur ###")
             addPlayer()
-            print("Si vous souhaitez ajouter un nouveau joueur, entrez 'n'. \nSinon entrez n'importe quelle autre valeur alphanumérique.\n")
-            command = getGivenValue()
-        } while (command == "n") // 'n' for new
+        }
+        if (maximumNbrOfPlayer != -1) {
+            while (nbrPlayerCreated < maximumNbrOfPlayer && addAditionalPlayer()){}
+        }
+        else { while(addAditionalPlayer()){} }
     }
     
     func addPlayer() {
-        print("Veuillez entrer votre nom de joueur: ")
+        print("Veuillez entrer le nom du joueur:")
         let pseudoPlayer : String = newPseudo() // The pseudo's player
-        print("Vous avez à présent à créer \(nbrOfCharacterPerTeam) personnages pour constituer une équipe.")
-        players[players.count] =  Player(name : pseudoPlayer, teamPlayer : createTeam())
-        print("Ajout du joueur: " + pseudoPlayer + "terminé. \n")
+        print("\(pseudoPlayer) a à présent à créer \(nbrOfCharacterPerTeam) personnages pour constituer son équipe.")
+        players.append(Player(name : pseudoPlayer, teamPlayer : createTeam()))
+        print("\nLe joueur " + pseudoPlayer + " a été ajouté au jeu.\nVoici la constitution de son équipe:")
+        for tmp in players[players.count-1].team {
+           print("- " + tmp.name + ", " + String(describing: type(of: tmp)) + ".")
+        }
     }
     
     func createTeam () -> [Character] {
         var teamPlayer : [Character] = []
-        for _ in 1...nbrOfCharacterPerTeam { teamPlayer.append(createCharacter()) } // Create the (3) characters for the player's team
+        for i in 1...nbrOfCharacterPerTeam {
+            var detail : String
+            if( i==1 ) { detail = "er" } else { detail = "ème" }
+            print("\n-- \(i)" + detail + " personnage -- ")
+            teamPlayer.append(createCharacter()) } // Create the (3) characters for the player's team
         return teamPlayer
     }
     
@@ -55,13 +113,29 @@ class Game {
         print("Choisisez le 'type' de ce personnage: \n- Entrez 1 pour un personnage de type COMBATTANT: L'attaquant classique, un bon guerrier !\n- Entrez 2 pour un personnage de type MAGE: Son talent ? Soigner les membres de son équipe.\n- Entrez 3 pour un personnage de type COLOSSE: Imposant et très résistant, mais il ne vous fera pas bien mal.\n- Entrez 4 pour un personnage de type NAIN: Sa hache vous infligera beaucoup de dégâts, mais il n'a pas beaucoup de points de vie.") // Display the list of the types of character available
         var indexer : Int?
         repeat {
-            repeat { indexer =  Int(getGivenValue()) } while indexer == nil // The user chooses one of thoses previously shown types
+            indexer =  Int(getGivenValue())  // The user chooses one of thoses previously shown types
+            while indexer == nil {
+                print("Veuillez entrer un chiffre correspondant à un des types ci-dessus: ")
+                indexer =  Int(getGivenValue())
+            }
             switch indexer! {
-            case 1: tmpCharacter = Combattant(name: nameOfCharacter)
-            case 2: tmpCharacter = Mage(name: nameOfCharacter)
-            case 3: tmpCharacter = Colosse(name: nameOfCharacter)
-            case 4: tmpCharacter = Nain(name: nameOfCharacter)
-            default: print("Personnage choisi incconu, veillez recommencer") // In that case, the user entered a wrong number, so he has to give us a new one.
+            case 1: do {
+                tmpCharacter = Combattant(name: nameOfCharacter)
+                print("Le combattant \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
+                }
+            case 2: do {
+                tmpCharacter = Mage(name: nameOfCharacter)
+                print("Le mage \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
+                }
+            case 3: do {
+                tmpCharacter = Colosse(name: nameOfCharacter)
+                print("Le colosse \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
+                }
+            case 4: do {
+                tmpCharacter = Nain(name: nameOfCharacter)
+                print("Le nain \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
+                }
+            default: print("Veuillez entrer un chiffre correspondant à un des types ci-dessus: ") // In that case, the user entered a wrong number, so he has to give us a new one.
                 break
             }
         } while(indexer! < 1 || indexer! > 4)
