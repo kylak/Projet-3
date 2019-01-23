@@ -8,55 +8,77 @@
 
 import Foundation
 
-/*
- TODO:
- - Terminer l'unicité
-- Message d'information
-*/
-
 class Game {
     
+    /*
+     Idea for improvement: add a view team option in the menu and also an other option to modify team.
+    */
+    
     var players : [Player]
+    var playersAdded : Bool // used by the menu
     let minimumNbrOfPlayer : Int = 2
     let maximumNbrOfPlayer : Int = 2
     let nbrOfCharacterPerTeam : Int  = 3
     
     /* How the game init works :
-        We add each player one per one (as many as we can)
-        when we have finished to add the players, we leave the 'adding mode' using an alphanumeric character
-        then we can launch the first round of the game.
-    */
+     We add each player one per one (as many as we can)
+     when we have finished to add the players, we leave the 'adding mode' using an alphanumeric character
+     then we can launch the first round of the game.
+     */
     
     init() {
         players = []
-        
-        func continueAfterPlayerAdded() {
-            print("\nL'ajout de joueur est terminé.\nOnt été enregsitré les joueurs suivant: ")
-            for tmp in players { print("- " + tmp.pseudo) }
-            print("")
-        }
+        playersAdded = false
         let frenchDetail: String
+
         if (minimumNbrOfPlayer == 1) { frenchDetail = "joueur"} else { frenchDetail = "joueurs" }
-        if (minimumNbrOfPlayer == maximumNbrOfPlayer ) {
-            print("\nBienvenue,\nCe jeu ne se joue qu'à \(minimumNbrOfPlayer) \(frenchDetail).")
-            addPlayers()
-            continueAfterPlayerAdded()
+        if (minimumNbrOfPlayer == maximumNbrOfPlayer) {
+            print("\nBienvenue dans le jeu lié au Projet 3.\nCe jeu ne se joue qu'à \(minimumNbrOfPlayer) \(frenchDetail).")
         }
         else if (maximumNbrOfPlayer == -1) { // -1 means that there's no maximum number of player
             print("\nBienvenue,\nCe jeu se joue à \(minimumNbrOfPlayer) \(frenchDetail) ou plus.")
-            addPlayers()
-            continueAfterPlayerAdded()
         }
         else if (minimumNbrOfPlayer < maximumNbrOfPlayer) {
-            print("\nBienvenue,\nCe jeu se joue au minimum à \(minimumNbrOfPlayer) \(frenchDetail) et au maximum à \(maximumNbrOfPlayer).")
+            print("\nBienvenue,\nCe jeu se joue de \(minimumNbrOfPlayer) à \(maximumNbrOfPlayer) joueurs.")
+        }
+        else {
+            print("\nErreur au niveau des caractéristiques du jeu.");
+            exit(0);
+        }
+        while(menu()) {}
+    }
+    
+    func continueAfterPlayerAdded() {
+        playersAdded = true
+        print("L'ajout de joueur est terminé.\nOnt été enregsitré les joueurs suivant: ")
+        for tmp in players { print("- " + tmp.pseudo) }
+        print("")
+    }
+    
+    func menu() -> Bool {
+        if (!playersAdded) {
+            print("\n### Menu du jeu ###\nPour:\n- Commencer une partie en ajoutant les joueurs entrez 'n'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu entrez n'importe quelle autre valeur alphanumérique.")
+        }
+        else {
+            print("\n### Menu du jeu ###\nPour:\n- Commencer une partie entrez 'n'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu entrez n'importe quelle autre valeur alphanumérique.")
+        }
+        var option : String
+        option = readLine()!
+        if (option == "n"){ // 'n' for next
+            print("\n### Ajout des joueurs ###")
             addPlayers()
             continueAfterPlayerAdded()
+            return true;
         }
-        else { print("\nErreur au niveau des caractéristiques du jeu.") }
+        else if (option == "i"){
+            print("### Informations relatives au jeu ###\nhttps://openclassrooms.com/fr/projects/59/assignment")
+            return true;
+        }
+        else { exit(0); }
+        return false;
     }
     
     func addPlayers() {
-        
         var nbrPlayerCreated : Int = 0
         
         func addAditionalPlayer() -> Bool {
@@ -64,7 +86,7 @@ class Game {
             let command : String = getGivenValue()
             if (command == "n") { // 'n' for new
                 nbrPlayerCreated += 1
-                print("\n## Ajout du \(nbrPlayerCreated)eme joueur ###")
+                print("** Ajout du \(nbrPlayerCreated)eme joueur **")
                 addPlayer()
                 return true
             }
@@ -75,34 +97,38 @@ class Game {
             var detail : String
             if( nbrPlayerCreated == 0 ) { detail = "er" } else { detail = "ème" }
             nbrPlayerCreated += 1
-            print("\n## Ajout du \(nbrPlayerCreated)\(detail) joueur ###")
+            print("** Ajout du \(nbrPlayerCreated)\(detail) joueur **")
             addPlayer()
         }
         if (maximumNbrOfPlayer != -1) {
             while (nbrPlayerCreated < maximumNbrOfPlayer && addAditionalPlayer()){}
         }
-        else { while(addAditionalPlayer()){} }
-    }
-    
-    func addPlayer() {
-        print("Veuillez entrer le nom du joueur:")
-        let pseudoPlayer : String = newPseudo() // The pseudo's player
-        print("\(pseudoPlayer) a à présent à créer \(nbrOfCharacterPerTeam) personnages pour constituer son équipe.")
-        players.append(Player(name : pseudoPlayer, teamPlayer : createTeam()))
-        print("\nLe joueur " + pseudoPlayer + " a été ajouté au jeu.\nVoici la constitution de son équipe:")
-        for tmp in players[players.count-1].team {
-           print("- " + tmp.name + ", " + String(describing: type(of: tmp)) + ".")
+        else {
+            while(addAditionalPlayer()) {}
         }
     }
     
-    func createTeam () -> [Character] {
-        var teamPlayer : [Character] = []
+    func addPlayer() { // CamelCase
+        print("Veuillez entrer le nom du joueur:")
+        let pseudoPlayer : String = newPseudo() // The pseudo's player
+        print("\(pseudoPlayer) a à présent à créer \(nbrOfCharacterPerTeam) personnages pour constituer son équipe.")
+        players.append(Player(name : pseudoPlayer, teamPlayer : []))
+        createTeam(owner: players[players.count-1])
+        print("\nLe joueur " + pseudoPlayer + " a été ajouté au jeu.\nVoici la constitution de son équipe:")
+        for tmp in players[players.count-1].team {
+            print("- " + tmp.name + ", " + String(describing: type(of: tmp)) + ".")
+        }
+        print("\n")
+    }
+    
+    func createTeam (owner : Player) {
         for i in 1...nbrOfCharacterPerTeam {
             var detail : String
             if( i==1 ) { detail = "er" } else { detail = "ème" }
             print("\n-- \(i)" + detail + " personnage -- ")
-            teamPlayer.append(createCharacter()) } // Create the (3) characters for the player's team
-        return teamPlayer
+            let characterTmp : Character = createCharacter()
+            owner.team.append(characterTmp) // Create the (3) characters for the player's team
+        }
     }
     
     func createCharacter() -> Character {
@@ -118,22 +144,18 @@ class Game {
                 indexer =  Int(readLine()!)
             }
             switch indexer! {
-            case 1: do {
-                tmpCharacter = Combattant(name: nameOfCharacter)
+            case 1:
                 print("Le combattant \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
-                }
-            case 2: do {
+                tmpCharacter = Mage(name: nameOfCharacter)
+            case 2:
                 tmpCharacter = Mage(name: nameOfCharacter)
                 print("Le mage \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
-                }
-            case 3: do {
+            case 3:
                 tmpCharacter = Colosse(name: nameOfCharacter)
                 print("Le colosse \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
-                }
-            case 4: do {
+            case 4:
                 tmpCharacter = Nain(name: nameOfCharacter)
                 print("Le nain \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
-                }
             default: print("Veuillez entrer un chiffre correspondant à un des types ci-dessus: ") // In that case, the user entered a wrong number, so he has to give us a new one.
                 break
             }
@@ -160,8 +182,14 @@ class Game {
     func isUnique(given : String) -> Bool {
         for one in players {
             if one.pseudo == given {
-                print("Le pseudo \(given) est déjà utilisé, veuillez en entrez un autre svp:")
+                print("Le pseudo \(given) est utilisé par un joueur, veuillez en entrez un autre svp:")
                 return false
+            }
+            for character in one.team {
+                if character.name == given {
+                    print("Le pseudo \(given) est utilisé par un personnage, veuillez en entrez un autre svp:")
+                    return false
+                }
             }
         }
         return true
