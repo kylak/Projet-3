@@ -10,9 +10,8 @@ import Foundation
 
 /*
  TODO:
-- Vérifier l'unicité des pseudos
+ - Terminer l'unicité
 - Message d'information
-- Que l'alphanumeric pour les pseudos et au moins 3 caractères sauf s'il contient un chiffre où dans ce ca il n'y a pas de restriction.
 */
 
 class Game {
@@ -113,10 +112,10 @@ class Game {
         print("Choisisez le 'type' de ce personnage: \n- Entrez 1 pour un personnage de type COMBATTANT: L'attaquant classique, un bon guerrier !\n- Entrez 2 pour un personnage de type MAGE: Son talent ? Soigner les membres de son équipe.\n- Entrez 3 pour un personnage de type COLOSSE: Imposant et très résistant, mais il ne vous fera pas bien mal.\n- Entrez 4 pour un personnage de type NAIN: Sa hache vous infligera beaucoup de dégâts, mais il n'a pas beaucoup de points de vie.") // Display the list of the types of character available
         var indexer : Int?
         repeat {
-            indexer =  Int(getGivenValue())  // The user chooses one of thoses previously shown types
+            indexer =  Int(readLine()!)  // The user chooses one of thoses previously shown types
             while indexer == nil {
                 print("Veuillez entrer un chiffre correspondant à un des types ci-dessus: ")
-                indexer =  Int(getGivenValue())
+                indexer =  Int(readLine()!)
             }
             switch indexer! {
             case 1: do {
@@ -150,13 +149,21 @@ class Game {
     
     func getGivenValue() -> String {
         var name : String?
-        while name == nil {name = readLine()}
+        name = readLine()
+        while (name == nil || (name!).count < 3 || (name!).rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) != nil) {
+            print("Veuillez n'entrer que des caractères alphanumériques et 3 au minimum.")
+            name = readLine()
+        }
         return name!
     }
     
     func isUnique(given : String) -> Bool {
-        for one in players { if one.pseudo == given { return false } }
+        for one in players {
+            if one.pseudo == given {
+                print("Le pseudo \(given) est déjà utilisé, veuillez en entrez un autre svp:")
+                return false
+            }
+        }
         return true
     }
-    
 }
