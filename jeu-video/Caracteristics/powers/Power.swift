@@ -10,14 +10,13 @@ import Foundation
 
 class Power {
     
-    let giveDamage: Int
-    let giveLifePoint: Int
-    let giveDefensePoint: Int
+    let name : String
+    var giveDamage: Int?
+    var giveLifePoint: Int?
+    var giveDefensePoint: Int?
     
-    init(damage: Int, life: Int, defense: Int) {
-        giveDamage = damage
-        giveLifePoint = life
-        giveDefensePoint = defense
+    init(name: String) {
+        self.name = name
     }
     
 }

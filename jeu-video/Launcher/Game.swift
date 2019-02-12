@@ -14,11 +14,16 @@ class Game {
      Idea for improvement: add a view team option in the menu and also an other option to modify team.
     */
     
+    /*
+     Todo: Fragmenter davantage mon code, notamment createCharacter() … ?
+    */
+    
     var players : [Player]
     var playersAdded : Bool // used by the menu
     let minimumNbrOfPlayer : Int = 2
     let maximumNbrOfPlayer : Int = 2
     let nbrOfCharacterPerTeam : Int  = 3
+    var playingTheGame : Playing?
     
     /* How the game init works :
      We add each player one per one (as many as we can)
@@ -55,12 +60,17 @@ class Game {
         print("")
     }
     
+    func play () {
+        playingTheGame = Playing(game: self)
+        playingTheGame?.start()
+    }
+    
     func menu() -> Bool {
         if (!playersAdded) {
-            print("\n### Menu du jeu ###\nPour:\n- Commencer une partie en ajoutant les joueurs entrez 'n'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu entrez n'importe quelle autre valeur alphanumérique.")
+            print("\n### Menu du jeu ###\nPour:\n- Commencer une partie en ajoutant les joueurs et leurs personnages, entrez 'n'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu, entrez n'importe quelle autre valeur alphanumérique.")
         }
         else {
-            print("\n### Menu du jeu ###\nPour:\n- Commencer une partie entrez 'n'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu entrez n'importe quelle autre valeur alphanumérique.")
+            print("\n### Menu du jeu ###\nPour:\n- Lancer une partie, entrez 'l'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu entrez n'importe quelle autre valeur alphanumérique.")
         }
         var option : String
         option = readLine()!
@@ -70,7 +80,10 @@ class Game {
             continueAfterPlayerAdded()
             return true;
         }
-        else if (option == "i"){
+        else if (option == "l") {
+            play()
+        }
+        else if (option == "i") {
             print("### Informations relatives au jeu ###\nhttps://openclassrooms.com/fr/projects/59/assignment")
             return true;
         }
@@ -146,7 +159,7 @@ class Game {
             switch indexer! {
             case 1:
                 print("Le combattant \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")
-                tmpCharacter = Mage(name: nameOfCharacter)
+                tmpCharacter = Combattant(name: nameOfCharacter)
             case 2:
                 tmpCharacter = Mage(name: nameOfCharacter)
                 print("Le mage \(nameOfCharacter) a été crée et sera ajouté à votre équipe.")

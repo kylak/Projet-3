@@ -12,10 +12,10 @@ class Mage:Character {
     
     // "Son talent ? Soigner les membres de son équipe."
     
-    var healing : Power
-    
-    init(name:String){
-        healing = Power(damage: 0, life: 10, defense: 2)
+    init(name:String) {
         super.init(name:name, life:110, defense: 100)
+        power = Power(name: "Guérison")
+        power!.giveLifePoint = 10
+        power!.giveDefensePoint = 2
     }
 }

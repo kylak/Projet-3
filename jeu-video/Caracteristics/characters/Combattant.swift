@@ -11,11 +11,10 @@ import Foundation
 class Combattant:Character {
     
     // "L'attaquant classique. Un bon guerrier !"
-    
-    var weapon:Sword
 
     init(name:String) {
-        self.weapon = Sword(damage: 10, levelMinimumAuthorized: 1, price: 30)
         super.init(name:name, life:100, defense: 100)
+        weapon.append(Sword(damage: 10, levelMinimumAuthorized: 1, price: 30))
+        weaponForCombat = weapon[0]
     }
 }

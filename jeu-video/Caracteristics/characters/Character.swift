@@ -14,9 +14,24 @@ class Character {
     var LifePoint:Int
     var DefensePoint:Int
     
+    var currentLifePoint:Int
+    var currentDefensePoint:Int
+    
+    // For characters carrying weapon(s)
+    var weapon : [Weapon?]
+    var weaponForCombat : Weapon? // the weapon chosen for combat
+    
+    // For characters using power(s)
+    var power : Power?
+    
+    // ( A character can have weapon(s) and power(s) )
+    
     init(name:String, life:Int, defense:Int){
+        self.weapon = []
         self.name = name
         LifePoint = life
         DefensePoint = defense
+        currentLifePoint = LifePoint
+        currentDefensePoint = DefensePoint
     }
 }

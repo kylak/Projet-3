@@ -19,6 +19,7 @@
 		4F28A5A621F667DE0094C0B4 /* Mage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F28A59A21F667DE0094C0B4 /* Mage.swift */; };
 		4F28A5A721F667DE0094C0B4 /* Nain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F28A59B21F667DE0094C0B4 /* Nain.swift */; };
 		4F28A5A821F667DE0094C0B4 /* Colosse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F28A59C21F667DE0094C0B4 /* Colosse.swift */; };
+		4F32848B21FECF0500646E86 /* Playing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F32848A21FECF0500646E86 /* Playing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,7 @@
 		4F28A59A21F667DE0094C0B4 /* Mage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mage.swift; sourceTree = "<group>"; };
 		4F28A59B21F667DE0094C0B4 /* Nain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nain.swift; sourceTree = "<group>"; };
 		4F28A59C21F667DE0094C0B4 /* Colosse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colosse.swift; sourceTree = "<group>"; };
+		4F32848A21FECF0500646E86 /* Playing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,8 +91,9 @@
 		4F28A58C21F667DE0094C0B4 /* Launcher */ = {
 			isa = PBXGroup;
 			children = (
-				4F28A58D21F667DE0094C0B4 /* Game.swift */,
 				4F28A58E21F667DE0094C0B4 /* Player.swift */,
+				4F28A58D21F667DE0094C0B4 /* Game.swift */,
+				4F32848A21FECF0500646E86 /* Playing.swift */,
 			);
 			path = Launcher;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F28A58621F6676E0094C0B4 /* main.swift in Sources */,
+				4F32848B21FECF0500646E86 /* Playing.swift in Sources */,
 				4F28A5A221F667DE0094C0B4 /* Axe.swift in Sources */,
 				4F28A59E21F667DE0094C0B4 /* Player.swift in Sources */,
 				4F28A5A721F667DE0094C0B4 /* Nain.swift in Sources */,
