@@ -15,6 +15,6 @@ class Nain:Character {
     init(name:String) {
         super.init(name:name, life:40, defense: 100)
         weapon.append(Axe(damage: 25, levelMinimumAuthorized: 1, price: 0))
-        weaponForCombat = weapon[0]
+        weaponUsedByDefault = weapon[0]
     }
 }

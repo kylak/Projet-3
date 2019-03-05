@@ -94,18 +94,6 @@ class Game {
     func addPlayers() {
         var nbrPlayerCreated : Int = 0
         
-        func addAditionalPlayer() -> Bool {
-            print("\nSi vous souhaitez ajouter un nouveau joueur, entrez 'n'.\nSinon entrez n'importe quelle autre valeur alphanumérique.")
-            let command : String = getGivenValue()
-            if (command == "n") { // 'n' for new
-                nbrPlayerCreated += 1
-                print("** Ajout du \(nbrPlayerCreated)eme joueur **")
-                addPlayer()
-                return true
-            }
-            return false
-        }
-        
         while (nbrPlayerCreated < minimumNbrOfPlayer) {
             var detail : String
             if( nbrPlayerCreated == 0 ) { detail = "er" } else { detail = "ème" }
@@ -114,11 +102,23 @@ class Game {
             addPlayer()
         }
         if (maximumNbrOfPlayer != -1) {
-            while (nbrPlayerCreated < maximumNbrOfPlayer && addAditionalPlayer()){}
+            while (nbrPlayerCreated < maximumNbrOfPlayer && addAditionalPlayer( nbrPlayerCreated : nbrPlayerCreated)){}
         }
         else {
-            while(addAditionalPlayer()) {}
+            while(addAditionalPlayer(nbrPlayerCreated : nbrPlayerCreated)) { nbrPlayerCreated += 1 }
         }
+    }
+    
+    func addAditionalPlayer(nbrPlayerCreated : Int) -> Bool {
+        
+        print("\nSi vous souhaitez ajouter un nouveau joueur, entrez 'n'.\nSinon entrez n'importe quelle autre valeur alphanumérique.")
+        let command : String = getGivenValue()
+        if (command == "n") { // 'n' for new
+            print("** Ajout du \(nbrPlayerCreated + 1)eme joueur **")
+            addPlayer()
+            return true
+        }
+        return false
     }
     
     func addPlayer() { // CamelCase

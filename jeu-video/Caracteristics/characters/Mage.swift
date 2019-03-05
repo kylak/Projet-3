@@ -14,8 +14,10 @@ class Mage:Character {
     
     init(name:String) {
         super.init(name:name, life:110, defense: 100)
-        power = Power(name: "Guérison")
-        power!.giveLifePoint = 10
-        power!.giveDefensePoint = 2
+        let healing : Power = Power(name: "Guérison")
+        healing.giveLifePoint = 10
+        healing.giveDefensePoint = 2
+        power.append(healing)
+        powerUsedByDefault = power[0] // healing
     }
 }

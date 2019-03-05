@@ -22,4 +22,14 @@ class Weapon {
         self.price = price
     }
     
+    func describe() {
+        print("\t\t\t› " + String(describing: type(of: self)) + ":")
+        print("\t\t\t\t- Dégat: \(self.damage)")
+    }
+    
+    static func generateNewOne () -> Weapon {
+        let randomDamage : Int = Int.random(in: 2 ..< 41)
+        return Weapon(damage: randomDamage, typeOfCharacterAuthorized: [], levelMinimumAuthorized:0, price:0)
+    }
+    
 }
