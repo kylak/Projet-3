@@ -12,8 +12,12 @@ import Foundation
 
 class Player { // This class represents a game's real player.
     
+    // MARK: PROPERTY LIST
+    
     private var pseudo : String     // The player's pseudo used for the game.
     private var team : [Character]  // The player's team used to fight others player's characters.
+    
+    // MARK: GETTER LIST
     
     func getPseudo() -> String {  // getter
         return pseudo
@@ -21,15 +25,6 @@ class Player { // This class represents a game's real player.
     
     func getTeam() -> [Character] {  // getter
         return team
-    }
-    
-    func addCharacterToTheTeam(this char : Character) {  // Function to add one character to the player's team
-         team.append(char)
-    }
-
-    init(name:String, teamPlayer : [Character]) {
-        pseudo = name
-        team = teamPlayer
     }
     
     private func getCharactersAlive () -> [Character] {        // Return the characters alive from the player's team.
@@ -41,6 +36,21 @@ class Player { // This class represents a game's real player.
         }
         return teamAlive
     }
+    
+    // MARK: SETTER LIST
+    
+    func addCharacterToTheTeam(this char : Character) {  // Function to add one character to the player's team
+         team.append(char)
+    }
+    
+    // MARK: CONSTRUCTOR
+
+    init(name:String, teamPlayer : [Character]) {
+        pseudo = name
+        team = teamPlayer
+    }
+    
+    // MARK: ACTION METHODS
     
     func isAllDead () -> Bool {     // Return if all the player's team characters are dead or not.
         for char in team {
@@ -69,6 +79,8 @@ class Player { // This class represents a game's real player.
         print("\(teamChosen[indexer! - 1].getName()) a été choisi.")
         return teamChosen[indexer! - 1]
     }
+    
+    // MARK: OTHER
     
     // This function is used to describe a set of characters often the player's team. It's useful for select a character when it's our time to play.
     private func describeTeam(teamGiven : [Character]) {

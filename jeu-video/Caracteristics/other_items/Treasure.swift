@@ -10,6 +10,8 @@ import Foundation
 
 class Treasure {        // This class represents treasures that you can find randomly during the game.
     
+    // MARK: ACTION METHODS
+    // MARK: On the treasure creation
     static func appeared (for character : Character) {      // The function that create a new treasure.
         print("\n ** Un coffre fort est apparu ! ** \nPour ouvrir ce coffre fort, entrez 'o': ")
         var newWeapon : Weapon?, newPower : Power?
@@ -34,17 +36,28 @@ class Treasure {        // This class represents treasures that you can find ran
         return true
     }
     
-    private static func open() { // to open the treasure
-        var choice : String
-        repeat {
-            choice =  readLine()!
-            if choice == "o" {
-                
+    // MARK: On the new created gift item
+    
+    // This function is used to inform the character on the item's caracteristics
+    private static func itemDescription(isAWeapon : Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) {
+        if(isAWeapon) {
+            print("L'item provenant du coffre est l'arme suivante: ")
+            print("\t› " + String(describing: type(of: itemPossibility1!)) + ":")
+            print("\t\t- Dégat: \(itemPossibility1!.getDamage())")
+        }
+        else {
+            print("L'item provenant du coffre est le pouvoir suivant: ")
+            print("\t› \(itemPossibility2!.getName()):")
+            if(itemPossibility2!.getGiveLifePoint() != nil) {
+                print("\t\t- Ajoute \(itemPossibility2!.getGiveLifePoint()!) points de vie.")
             }
-            else {
-                print("Caractère non reconnu, il vous faut ouvrir ce coffre.\nPour ouvrir ce coffre fort, entrez 'o': ")
+            else { print("\t\t- N'ajoute pas de point de vie.") }
+            if(itemPossibility2!.getGiveDefensePoint() != nil) {
+                print("\t\t- Ajoute \(itemPossibility2!.getGiveLifePoint()!) points de défense.")
             }
-        } while (choice != "o")
+            else { print("\t\t- N'ajoute pas de point de défense.") }
+            
+        }
     }
     
     // This function says if the item can be taken by the character: healing only for mage and weapon only for the others.
@@ -76,29 +89,6 @@ class Treasure {        // This class represents treasures that you can find ran
             }
         }
         return canGiftBeCarry
-    }
-    
-    
-    // This function is used to inform the character on the item's caracteristics
-    private static func itemDescription(isAWeapon : Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) {
-        if(isAWeapon) {
-            print("L'item provenant du coffre est l'arme suivante: ")
-            print("\t› " + String(describing: type(of: itemPossibility1!)) + ":")
-            print("\t\t- Dégat: \(itemPossibility1!.getDamage())")
-        }
-        else {
-            print("L'item provenant du coffre est le pouvoir suivant: ")
-            print("\t› \(itemPossibility2!.name):")
-            if(itemPossibility2!.giveLifePoint != nil) {
-                print("\t\t- Ajoute \(itemPossibility2!.giveLifePoint!) points de vie.")
-            }
-            else { print("\t\t- N'ajoute pas de point de vie.") }
-            if(itemPossibility2!.giveDefensePoint != nil) {
-                print("\t\t- Ajoute \(itemPossibility2!.giveLifePoint!) points de défense.")
-            }
-            else { print("\t\t- N'ajoute pas de point de défense.") }
-            
-        }
     }
     
     // This function is used by the character to take the item
@@ -133,8 +123,6 @@ class Treasure {        // This class represents treasures that you can find ran
         } while (choice != "o" && choice != "n")
     }
     
-    //MARK: Section 1
-    
     // This function is used by the character to take the item in the case where it's a power
     private static func forPowerGift (powerGiven : Power, character : Character) {
         print("Voulez-vous que \(character.getName()) utilise ce pouvoir en tant qu'action par défaut ?")
@@ -155,6 +143,21 @@ class Treasure {        // This class represents treasures that you can find ran
                 print("Caractère non reconnu.\nEntrez 'o' pour répondre par l'affirmative ou 'n' pour la négative :")
             }
         } while (choice != "o" && choice != "n")
+    }
+    
+    // MARK: OTHER
+    
+    private static func open() { // to open the treasure
+        var choice : String
+        repeat {
+            choice =  readLine()!
+            if choice == "o" {
+                
+            }
+            else {
+                print("Caractère non reconnu, il vous faut ouvrir ce coffre.\nPour ouvrir ce coffre fort, entrez 'o': ")
+            }
+        } while (choice != "o")
     }
 }
 

@@ -10,11 +10,14 @@ import Foundation
 
 class GameManager {     // This class is used to add players and characters before playing with them.
     
+    // MARK: PROPERTY LIST
+    
     private var players : [Player]      // All the players of the game. Watch out: character and player are two different things.
     private var playersAdded : Bool     // Used by the menu to know if the user has already add the players of the game.
     private let minimumNbrOfPlayer : Int = 2        // minimum number of player
-    private let maximumNbrOfPlayer : Int = 2        // maximum number of player
-    private let nbrOfCharacterPerTeam : Int  = 3        // number of character per team
+    private let maximumNbrOfPlayer : Int = 4        // maximum number of player
+    private var nbrPlayerCreated : Int = 0
+    private let nbrOfCharacterPerTeam : Int  = 2        // number of character per team
     private var playingTheGame : GameCore?       // To launch the game
     
     /* How the game init works :
@@ -23,9 +26,13 @@ class GameManager {     // This class is used to add players and characters befo
      then we can launch the first round of the game.
      */
     
+    // MARK: GETTER LIST
+    
     func getPlayers() -> [Player] {  // getter (the only non private method)
         return players
     }
+    
+    // MARK: CONSTRUCTOR
     
     init() {
         players = []
@@ -49,17 +56,7 @@ class GameManager {     // This class is used to add players and characters befo
         while(menu()) {}
     }
     
-    private func continueAfterPlayerAdded() {       // Display all the players added
-        playersAdded = true
-        print("L'ajout de joueur est terminé.\nOnt été enregsitré les joueurs suivant: ")
-        for tmp in players { print("- " + tmp.getPseudo()) }
-        print("")
-    }
-    
-    private func play () {      // Once all players are added launch the game !
-        playingTheGame = GameCore(game: self)
-        playingTheGame?.start()
-    }
+    // MARK: ACTION METHODS
     
     private func menu() -> Bool {       // Display the game's menu
         if (!playersAdded) {
@@ -68,12 +65,11 @@ class GameManager {     // This class is used to add players and characters befo
         else {
             print("\n### Menu du jeu ###\nPour:\n- Lancer une partie, entrez 'l'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu entrez n'importe quelle autre valeur alphanumérique.")
         }
-        var option : String
-        option = readLine()!
+        let option : String = readLine()!
         if (option == "n"){ // 'n' for next
             print("\n### Ajout des joueurs ###")
             addPlayers()
-            continueAfterPlayerAdded()
+            continueAfterPlayersAdded()
             return true;
         }
         else if (option == "l") {
@@ -87,21 +83,22 @@ class GameManager {     // This class is used to add players and characters befo
         return false;
     }
     
+    // MARK: 1. Add players
+    
     private func addPlayers() {     // To add all players
-        var nbrPlayerCreated : Int = 0
         
         while (nbrPlayerCreated < minimumNbrOfPlayer) {
             var detail : String
-            if( nbrPlayerCreated == 0 ) { detail = "er" } else { detail = "ème" }
+            if(nbrPlayerCreated == 0 ) { detail = "er" } else { detail = "ème" }
             nbrPlayerCreated += 1
             print("** Ajout du \(nbrPlayerCreated)\(detail) joueur **")
             addPlayer()
         }
         if (maximumNbrOfPlayer != -1) {
-            while (nbrPlayerCreated < maximumNbrOfPlayer && addAditionalPlayer( nbrPlayerCreated : nbrPlayerCreated)){}
+            while (nbrPlayerCreated < maximumNbrOfPlayer && addAditionalPlayer()){}
         }
         else {
-            while(addAditionalPlayer(nbrPlayerCreated : nbrPlayerCreated)) { nbrPlayerCreated += 1 }
+            while(addAditionalPlayer()){}
         }
     }
     
@@ -118,16 +115,19 @@ class GameManager {     // This class is used to add players and characters befo
         print("\n")
     }
     
-    private func addAditionalPlayer(nbrPlayerCreated : Int) -> Bool {       // To add an other player
+    private func addAditionalPlayer() -> Bool {       // To add an other player
         print("\nSi vous souhaitez ajouter un nouveau joueur, entrez 'n'.\nSinon entrez n'importe quelle autre valeur alphanumérique.")
-        let command : String = getGivenValue()
+        let command : String = readLine()!
         if (command == "n") { // 'n' for new
-            print("** Ajout du \(nbrPlayerCreated + 1)eme joueur **")
+            nbrPlayerCreated += 1
+            print("** Ajout du \(nbrPlayerCreated)eme joueur **")
             addPlayer()
             return true
         }
         return false
     }
+    
+    // MARK: 2. Add characters
     
     private func createTeam (owner : Player) {      // To create the player's team
         for i in 1...nbrOfCharacterPerTeam {
@@ -170,6 +170,23 @@ class GameManager {     // This class is used to add players and characters befo
         } while(indexer! < 1 || indexer! > 4)
         return tmpCharacter!
     }
+    
+    // MARK: 3. Ready to be launch
+    
+    private func continueAfterPlayersAdded() {       // Display all the players added
+        playersAdded = true
+        print("L'ajout de joueur est terminé.\nOnt été enregsitré les joueurs suivant: ")
+        for tmp in players { print("- " + tmp.getPseudo()) }
+        print("")
+    }
+    
+    private func play () {      // Once all players are added launch the game !
+        playingTheGame = GameCore(game: self)
+        playingTheGame?.start()
+    }
+    
+    // MARK: OTHER
+    // MARK: Get pseudos
     
     private func newPseudo() -> String {        // Get an unique string as name from the user
         var pseudo : String

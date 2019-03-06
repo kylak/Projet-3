@@ -10,6 +10,8 @@ import Foundation
 
 class Character {       // This class is the character's class mother.
 
+    // MARK: PROPERTY LIST
+    
     private var name:String     // The character's name
     private var LifePoint:Int       // The total life point of the character
     private var DefensePoint:Int        // The total defense point of the character
@@ -25,33 +27,33 @@ class Character {       // This class is the character's class mother.
     private var power : [Power?]        // The power's inventory of the character
     private var powerUsedByDefault : Power? // the power chosen for the fight time
     
-    // Getter
+    // MARK: GETTER LIST
     
-    func getName() -> String {  // getter
+    func getName() -> String {   // a getter method
         return name
     }
     
-    func getLifePoint() -> Int {    // getter
+    func getLifePoint() -> Int {     // a getter method
         return LifePoint
     }
     
-    func geDefense() -> Int {   // getter
+    func geDefense() -> Int {    // a getter method
         return DefensePoint
     }
     
-    func getCurrentLifePoint() -> Int { // getter
+    func getCurrentLifePoint() -> Int {      // a getter method
         return currentLifePoint
     }
     
-    func getCurrentDefensePoint() -> Int {     // getter
+    func getCurrentDefensePoint() -> Int {     // a getter method
         return currentDefensePoint
     }
     
-    func getWeapon() -> [Weapon?] {     // getter
+    func getWeapon() -> [Weapon?] {     // a getter method
         return weapon
     }
     
-    func getWeapon(index : Int) -> Weapon? {     // getter
+    func getWeapon(index : Int) -> Weapon? {      // a getter method
         if(index >= 0 && index < weapon.count){
             return weapon[index]
         }
@@ -59,24 +61,16 @@ class Character {       // This class is the character's class mother.
             return nil
         }
     }
-    
-    func addWeapon(this weap : Weapon) {  // Function to add one character to the player's team
-        weapon.append(weap)
-    }
-    
-    func getWeaponUsedByDefault() -> Weapon? {      // getter
+
+    func getWeaponUsedByDefault() -> Weapon? {       // a getter method
         return weaponUsedByDefault
-    }
-    
-    func setWeaponUsedByDefault(this weap : Weapon) {      // getter
-        weaponUsedByDefault = weap
     }
     
     func getPower() -> [Power?] {      // getter
         return power
     }
     
-    func getPower(index : Int) -> Power? {     // getter
+    func getPower(index : Int) -> Power? {      // a getter method
         if(index >= 0 && index < power.count){
             return power[index]
         }
@@ -85,19 +79,29 @@ class Character {       // This class is the character's class mother.
         }
     }
     
-    func addPower(this: Power?) {
-        power.append(this)
-    }
-    
-    func getPowerUsedByDefault() -> Power? {      // getter
+    func getPowerUsedByDefault() -> Power? {      // a getter method
         return powerUsedByDefault
     }
     
-    func setPowerUsedByDefault(this: Power?) {
+    // MARK: SETTER LIST
+    
+    func setWeaponUsedByDefault(this weap : Weapon?) {      // a setter method
+        weaponUsedByDefault = weap
+    }
+    
+    func setPowerUsedByDefault(this: Power?) {      // a setter method
         powerUsedByDefault = this
     }
     
-    // ( A character can have weapon(s) and power(s) )
+    func addWeapon(this weap : Weapon?) {       // a kind of setter method
+        weapon.append(weap)
+    }
+    
+    func addPower(this powerGiven : Power?) {       // a kind of setter method
+        power.append(powerGiven)
+    }
+    
+    // MARK: CONSTRUCTOR
     
     init(name:String, life:Int, defense:Int){
         self.name = name
@@ -109,11 +113,7 @@ class Character {       // This class is the character's class mother.
         self.power = []
     }
     
-    func describe() {       // This function is used to describe the caracterics of the character.
-        print("\t- \(name), de type " + String(describing: type(of: self)) + ":")
-        print("\t\t• \(currentLifePoint) de point de vie.")
-        print("\t\t• \(currentDefensePoint) point de défense.")
-    }
+    // MARK: ACTION METHODS
     
     func act(to: Character) {       // This function is used to make a character fighting or healing an other.
         if (String(describing: type(of: self)) == "Mage") { // It heals
@@ -126,7 +126,7 @@ class Character {       // This class is the character's class mother.
     
     private func fight(to : Character) {        // This function is used to make a character fighting
         if (weaponUsedByDefault != nil) {
-            if (weaponUsedByDefault!.getDamage() < to.LifePoint) {
+            if (weaponUsedByDefault!.getDamage() < to.currentLifePoint) {
                 to.currentLifePoint -= weaponUsedByDefault!.getDamage()
                 print("-> \(name) a ôté \(weaponUsedByDefault!.getDamage()) point de vie à \(to.name).\n")
             }
@@ -142,22 +142,30 @@ class Character {       // This class is the character's class mother.
     
     private func heal(to : Character) {     // This function is used to make a character healing
         if (to.currentLifePoint < to.LifePoint) {
-            if (powerUsedByDefault != nil && powerUsedByDefault!.giveLifePoint != nil) {
-                to.currentLifePoint += powerUsedByDefault!.giveLifePoint!
-                print("-> \(name) a ajouté \(powerUsedByDefault!.giveLifePoint!) points de vie à \(to.name).")
+            if (powerUsedByDefault != nil && powerUsedByDefault!.getGiveLifePoint() != nil) {
+                to.currentLifePoint += powerUsedByDefault!.getGiveLifePoint()!
+                print("-> \(name) a ajouté \(powerUsedByDefault!.getGiveLifePoint()!) points de vie à \(to.name).")
             }
         }
         else {
             print("-> \(to.name) a déjà tous ses points de vie.")
         }
         if (to.currentDefensePoint < to.DefensePoint) {
-            if (powerUsedByDefault != nil && powerUsedByDefault!.giveDefensePoint != nil) {
-                to.currentDefensePoint += powerUsedByDefault!.giveDefensePoint!
-                print("-> \(name) a ajouté \(powerUsedByDefault!.giveDefensePoint!) points de défense à \(to.name).\n")
+            if (powerUsedByDefault != nil && powerUsedByDefault!.getGiveDefensePoint() != nil) {
+                to.currentDefensePoint += powerUsedByDefault!.getGiveDefensePoint()!
+                print("-> \(name) a ajouté \(powerUsedByDefault!.getGiveDefensePoint()!) points de défense à \(to.name).\n")
             }
         }
         else {
             print("-> \(to.name) a déjà tous ses points de défense.\n")
         }
+    }
+    
+     // MARK: OTHER
+    
+    func describe() {       // This function is used to describe the caracterics of the character.
+        print("\t- \(name), de type " + String(describing: type(of: self)) + ":")
+        print("\t\t• \(currentLifePoint) de point de vie.")
+        print("\t\t• \(currentDefensePoint) point de défense.")
     }
 }

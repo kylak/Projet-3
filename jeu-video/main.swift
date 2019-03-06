@@ -8,4 +8,6 @@
 
 import Foundation
 
-private var newGame = GameManager() //     Execute the game.
+// MARK: Game execution
+
+private var newGame = GameManager()     // Execute the game.
