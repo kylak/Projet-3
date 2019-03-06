@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Nain:Character {
+class Nain:Character {      // This class represents a nain
     
     // "Sa hache vous infligera beaucoup de dégâts, mais il n'a pas beaucoup de points de vie."
     

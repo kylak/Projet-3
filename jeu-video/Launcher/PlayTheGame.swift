@@ -8,18 +8,18 @@
 
 import Foundation
 
-class Playing {
+class PlayTheGame {     // This class describe how the players play the game and how it works.
     
-    var gameInformations : Game
-    var winner : Player?
+    var gameInformations : StartTheGame     // Get the players informations that have been captured with the game menu (see the cass StartTheGame.swift)
+    var winner : Player?        // The future winner of the game.
     
-    init (game : Game) {
+    init (game : StartTheGame) {
         gameInformations = game
         winner = nil
     }
     
-    func start() {
-        // Pour l'instant, l'ordre du jeu se fait selon les indices du tableau de players
+    func start() {      // The function that rules the game
+        // At this time, the game order is in function of the players indexes.
         var indexOfThePlayingPlayer : Int = 0 // I'd like to declare this variable in the while because I won't use it anymore after the while, how can I do ?
         repeat {
             turn(of: nextPlayerIndex(after: indexOfThePlayingPlayer)) // The player associated has to play ! It's his turn.
@@ -29,7 +29,7 @@ class Playing {
         print("\n\(winner!.pseudo) a remporté la partie !\n")
     }
     
-    func turn(of currentPlayer : Int) {
+    func turn(of currentPlayer : Int) {     // This method describes how a player's turn works
         let thePlayingPlayer : Player = gameInformations.players[currentPlayer]
         print("---- C'est au tour de \(thePlayingPlayer.pseudo) ----")
         let theNextPlayingPlayer : Player = gameInformations.players[nextPlayerIndex(after: currentPlayer)]
@@ -52,14 +52,14 @@ class Playing {
         theFirstChosenCharacter.act(to: theSecondChosenCharacter)
     }
     
-    func nextPlayerIndex (after this : Int) -> Int {
+    func nextPlayerIndex (after this : Int) -> Int {        // Give the next player index
         if(this == gameInformations.players.count - 1) {
             return 0
         }
         return this + 1
     }
     
-    func gameEnded () -> Bool {
+    func gameEnded () -> Bool {     // Says if the game has ended
         var NbrOfUnplayablePlayer : Int = 0
         for thePlayerTeam in gameInformations.players {
             if (thePlayerTeam.isAllDead()) {
@@ -72,7 +72,7 @@ class Playing {
         return false
     }
     
-    func getTheWinner () -> Player? {
+    func getTheWinner () -> Player? {       // Get the winner of the game
         if (gameEnded()) {
             for player in gameInformations.players {
                 if (!player.isAllDead()) {
@@ -83,15 +83,10 @@ class Playing {
         return nil
     }
     
-    func thisTimeIsGood() -> Bool {
-        // the use of thisTimeIsGood() is only to rename generateNewItem() to use it in the turn() method.
-        return !generateNewItem() // ! i.e it's return more often a false value so get a treasure is less frequent that to not get one.
-    }
-    
-    func generateNewItem () -> Bool { // True for weapon & False for power
+    func thisTimeIsGood() -> Bool {     // This method says if it's the time to show up a treasure or not.
         let number = Int.random(in: 0 ..< 4) // either 0, 1, 2 or 3
-        if (number == 2) { return false } // 2 means it's a power
-        return true
+        if (number == 2) { return true } // 2 means it's a power
+        return false
     }
     
 }

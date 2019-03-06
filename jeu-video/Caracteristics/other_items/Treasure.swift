@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Treasure {
+class Treasure {        // This class represents treasures that you can find randomly during the game.
     
-    static func appeared (for character : Character) {
+    static func appeared (for character : Character) {      // The function that create a new treasure.
         print("\n ** Un coffre fort est apparu ! ** \nPour ouvrir ce coffre fort, entrez 'o': ")
         var newWeapon : Weapon?, newPower : Power?
         let isNewItemWeapon : Bool = generateNewItem()
@@ -18,7 +18,7 @@ class Treasure {
             newWeapon = Weapon.generateNewOne()
         }
         else {
-            newPower = Power.generateNewOne()
+            newPower = Power.generateNewHealing()
         }
         open()
         let toContinue = canGiftBeCarry(byThis: character, dependingOf: isNewItemWeapon, itemPossibility1: newWeapon, itemPossibility2: newPower)
@@ -27,6 +27,7 @@ class Treasure {
         }
     }
     
+    // This function create the item inside of the treasure: weapon or healing gift
     static func generateNewItem () -> Bool { // "True" for a weapon or "False" for a power
         let number = Int.random(in: 0 ..< 4) // either 0, 1, 2 or 3
         if (number == 2) { return false } // 2 means it's a power
@@ -46,6 +47,7 @@ class Treasure {
         } while (choice != "o")
     }
     
+    // This function says if the item can be taken by the character: healing only for mage and weapon only for the others.
     static func canGiftBeCarry(byThis character : Character,  dependingOf itemIsWeapon: Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) -> Bool {
         var canGiftBeCarry : Bool = false
         if (itemIsWeapon && String(describing: type(of: character)) != "Mage" && itemPossibility1 != nil) {
@@ -76,6 +78,8 @@ class Treasure {
         return canGiftBeCarry
     }
     
+    
+    // This function is used to inform the character on the item's caracteristics
     static func itemDescription(isAWeapon : Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) {
         if(isAWeapon) {
             print("L'item provenant du coffre est l'arme suivante: ")
@@ -97,6 +101,7 @@ class Treasure {
         }
     }
     
+    // This function is used by the character to take the item
     static func getTheGift(dependingOf itemIsWeapon: Bool, itemPossibility1 : Weapon?, itemPossibility2 : Power?, forThis character : Character ) {
         if (itemIsWeapon && itemPossibility1 != nil) {
             forWeaponGift(weaponGiven: itemPossibility1!, character: character)
@@ -106,6 +111,7 @@ class Treasure {
         }
     }
     
+    // This function is used by the character to take the item in the case where it's a weapon
     static func forWeaponGift (weaponGiven : Weapon, character : Character) {
         print("Voulez-vous que \(character.name) utilise cette arme pour combattre ? il s'agira alors dans ce cas de son arme par défaut.")
         print("Entrez 'o' pour répondre par l'affirmative ou 'n' pour la négative :")
@@ -127,6 +133,7 @@ class Treasure {
         } while (choice != "o" && choice != "n")
     }
     
+    // This function is used by the character to take the item in the case where it's a power
     static func forPowerGift (powerGiven : Power, character : Character) {
         print("Voulez-vous que \(character.name) utilise ce pouvoir en tant qu'action par défaut ?")
         print("Entrez 'o' pour répondre par l'affirmative ou 'n' pour la négative :")

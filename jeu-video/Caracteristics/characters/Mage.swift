@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Mage:Character {
+class Mage:Character {      // This class represents a mage
     
     // "Son talent ? Soigner les membres de son équipe."
     

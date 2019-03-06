@@ -8,18 +8,20 @@
 
 import Foundation
 
-class Player {
-    
-    var pseudo : String
-    var team : [Character]
+    // This is class is used a little bit in StartTheGame.swift and mainly in PlayTheGame.swift
 
-    init(name:String, teamPlayer : [Character]){
+class Player { // This class represents a game's real player.
+    
+    var pseudo : String     // The player's pseudo used for the game.
+    var team : [Character]  // The player's team used to fight others player's characters.
+
+    init(name:String, teamPlayer : [Character]) {    // The
         pseudo = name
         team = teamPlayer
     }
     
-    func charactersAlive () -> [Character] {
-        var teamAlive : [Character] = []
+    func getCharactersAlive () -> [Character] {        // Return the characters alive from the player's team.
+        var teamAlive : [Character] = []    // The team that will be returned
         for char in team {
             if (char.LifePoint > 0) {
                 teamAlive.append(char)
@@ -28,7 +30,7 @@ class Player {
         return teamAlive
     }
     
-    func isAllDead () -> Bool {
+    func isAllDead () -> Bool {     // Return if all the player's team characters are dead or not.
         for char in team {
             if (char.LifePoint > 0) {
                 return false
@@ -37,17 +39,17 @@ class Player {
         return true
     }
     
-    func chooseOneCharacter(onlyAliveCharacter : Bool) -> Character? {
-        var teamChosen : [Character]
+    func chooseOneCharacter(onlyAliveCharacter : Bool) -> Character? {      // The user choose one character among the player's team.
+        var teamChosen : [Character]        // The team given: only the alive characters or all the team ?
         if (onlyAliveCharacter == true) {
-            teamChosen = charactersAlive()
+            teamChosen = getCharactersAlive()
         }
         else {
             teamChosen = team
         }
         describeTeam(teamGiven: teamChosen)
-        var indexer : Int?
-        indexer =  Int(readLine()!)  // The user chooses one of thoses previously shown types
+        var indexer : Int?      // Used to get the user choice about the character he wants.
+        indexer =  Int(readLine()!)
         while indexer == nil || indexer! > teamChosen.count || indexer! < 1 {
             print("Veuillez entrer un chiffre correspondant à un des personnages ci-dessus: ")
             indexer =  Int(readLine()!)
@@ -56,8 +58,9 @@ class Player {
         return teamChosen[indexer! - 1]
     }
     
+    // This function is used to describe a set of characters often the player's team. It's useful for select a character when it's our time to play.
     func describeTeam(teamGiven : [Character]) {
-        var index : Int = 1
+        var index : Int = 1     // The index of the character used to be able to select it.
         for i in teamGiven {
             print("- Entrez '\(index)' pour choisir le personnage suivant: ")
             i.describe()

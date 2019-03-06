@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Colosse:Character {
+class Colosse:Character {       // This class represents a colosse
     
     // "Imposant et très résistant, mais il ne vous fera pas bien mal"
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Sword:Weapon {
+class Sword:Weapon {        //  This class represents swords.
     
     init(damage:Int, levelMinimumAuthorized:Int, price:Int) {
         let user:[Combattant] = []

@@ -8,21 +8,21 @@
 
 import Foundation
 
-class Character {
+class Character {       // This class is the character's class mother.
 
-    var name:String
-    var LifePoint:Int
-    var DefensePoint:Int
+    var name:String     // The character's name
+    var LifePoint:Int       // The total life point of the character
+    var DefensePoint:Int        // The total defense point of the character
     
-    var currentLifePoint:Int
-    var currentDefensePoint:Int
+    var currentLifePoint:Int        // The current life point of the character
+    var currentDefensePoint:Int     // The current defense point of the character
     
     // For characters carrying weapon(s)
-    var weapon : [Weapon?]
+    var weapon : [Weapon?]          // The weapon's inventory of the character
     var weaponUsedByDefault : Weapon? // the weapon chosen for combat
     
     // For characters using power(s)
-    var power : [Power?]
+    var power : [Power?]        // The power's inventory of the character
     var powerUsedByDefault : Power? // the power chosen for the fight time
     
     // ( A character can have weapon(s) and power(s) )
@@ -37,13 +37,13 @@ class Character {
         self.power = []
     }
     
-    func describe() {
+    func describe() {       // This function is used to describe the caracterics of the character.
         print("\t- \(name), de type " + String(describing: type(of: self)) + ":")
         print("\t\t• \(currentLifePoint) de point de vie.")
         print("\t\t• \(currentDefensePoint) point de défense.")
     }
     
-    func act(to: Character) {
+    func act(to: Character) {       // This function is used to make a character fighting or healing an other.
         if (String(describing: type(of: self)) == "Mage") { // It heals
             heal(to : to)
         }
@@ -52,7 +52,7 @@ class Character {
         }
     }
     
-    func fight(to : Character) {
+    func fight(to : Character) {        // This function is used to make a character fighting
         if (weaponUsedByDefault != nil) {
             if (weaponUsedByDefault!.damage < to.LifePoint) {
                 to.currentLifePoint -= weaponUsedByDefault!.damage
@@ -68,7 +68,7 @@ class Character {
         }
     }
     
-    func heal(to : Character) {
+    func heal(to : Character) {     // This function is used to make a character healing
         if (to.currentLifePoint < to.LifePoint) {
             if (powerUsedByDefault != nil && powerUsedByDefault!.giveLifePoint != nil) {
                 to.currentLifePoint += powerUsedByDefault!.giveLifePoint!

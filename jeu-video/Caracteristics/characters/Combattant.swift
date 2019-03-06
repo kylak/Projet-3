@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Combattant:Character {
+class Combattant:Character {        // This class represents combattant
     
     // "L'attaquant classique. Un bon guerrier !"
 
