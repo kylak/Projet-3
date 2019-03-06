@@ -8,20 +8,24 @@
 
 import Foundation
 
-class StartTheGame {
+class GameManager {     // This class is used to add players and characters before playing with them.
     
-    var players : [Player]      // All the players of the game. Watch out: character and player are two different things.
-    var playersAdded : Bool     // Used by the menu to know if the user has already add the players of the game.
-    let minimumNbrOfPlayer : Int = 2        // minimum number of player
-    let maximumNbrOfPlayer : Int = 2        // maximum number of player
-    let nbrOfCharacterPerTeam : Int  = 3        // number of character per team
-    var playingTheGame : PlayTheGame?       // To launch the game
+    private var players : [Player]      // All the players of the game. Watch out: character and player are two different things.
+    private var playersAdded : Bool     // Used by the menu to know if the user has already add the players of the game.
+    private let minimumNbrOfPlayer : Int = 2        // minimum number of player
+    private let maximumNbrOfPlayer : Int = 2        // maximum number of player
+    private let nbrOfCharacterPerTeam : Int  = 3        // number of character per team
+    private var playingTheGame : GameCore?       // To launch the game
     
     /* How the game init works :
      We add each player one per one (as many as we can)
      when we have finished to add the players, we leave the 'adding mode' using an alphanumeric character
      then we can launch the first round of the game.
      */
+    
+    func getPlayers() -> [Player] {  // getter (the only non private method)
+        return players
+    }
     
     init() {
         players = []
@@ -45,19 +49,19 @@ class StartTheGame {
         while(menu()) {}
     }
     
-    func continueAfterPlayerAdded() {       // Display all the players added
+    private func continueAfterPlayerAdded() {       // Display all the players added
         playersAdded = true
         print("L'ajout de joueur est terminé.\nOnt été enregsitré les joueurs suivant: ")
-        for tmp in players { print("- " + tmp.pseudo) }
+        for tmp in players { print("- " + tmp.getPseudo()) }
         print("")
     }
     
-    func play () {      // Once all players are added launch the game !
-        playingTheGame = PlayTheGame(game: self)
+    private func play () {      // Once all players are added launch the game !
+        playingTheGame = GameCore(game: self)
         playingTheGame?.start()
     }
     
-    func menu() -> Bool {       // Display the game's menu
+    private func menu() -> Bool {       // Display the game's menu
         if (!playersAdded) {
             print("\n### Menu du jeu ###\nPour:\n- Commencer une partie en ajoutant les joueurs et leurs personnages, entrez 'n'.\n- Avoir des informations sur le jeu, entrez 'i'.\n- Quitter le jeu, entrez n'importe quelle autre valeur alphanumérique.")
         }
@@ -83,7 +87,7 @@ class StartTheGame {
         return false;
     }
     
-    func addPlayers() {     // To add all players
+    private func addPlayers() {     // To add all players
         var nbrPlayerCreated : Int = 0
         
         while (nbrPlayerCreated < minimumNbrOfPlayer) {
@@ -101,20 +105,20 @@ class StartTheGame {
         }
     }
     
-    func addPlayer() {      // To add one player
+    private func addPlayer() {      // To add one player
         print("Veuillez entrer le nom du joueur:")
         let pseudoPlayer : String = newPseudo() // The pseudo's player
         print("\(pseudoPlayer) a à présent à créer \(nbrOfCharacterPerTeam) personnages pour constituer son équipe.")
         players.append(Player(name : pseudoPlayer, teamPlayer : []))
         createTeam(owner: players[players.count-1])
         print("\nLe joueur " + pseudoPlayer + " a été ajouté au jeu.\nVoici la constitution de son équipe:")
-        for tmp in players[players.count-1].team {
-            print("- " + tmp.name + ", " + String(describing: type(of: tmp)) + ".")
+        for tmp in players[players.count-1].getTeam() {
+            print("- " + tmp.getName() + ", " + String(describing: type(of: tmp)) + ".")
         }
         print("\n")
     }
     
-    func addAditionalPlayer(nbrPlayerCreated : Int) -> Bool {       // To add an other player
+    private func addAditionalPlayer(nbrPlayerCreated : Int) -> Bool {       // To add an other player
         print("\nSi vous souhaitez ajouter un nouveau joueur, entrez 'n'.\nSinon entrez n'importe quelle autre valeur alphanumérique.")
         let command : String = getGivenValue()
         if (command == "n") { // 'n' for new
@@ -125,17 +129,17 @@ class StartTheGame {
         return false
     }
     
-    func createTeam (owner : Player) {      // To create the player's team
+    private func createTeam (owner : Player) {      // To create the player's team
         for i in 1...nbrOfCharacterPerTeam {
             var detail : String
             if( i==1 ) { detail = "er" } else { detail = "ème" }
             print("\n-- \(i)" + detail + " personnage -- ")
             let characterTmp : Character = createCharacter()
-            owner.team.append(characterTmp) // Create the (3) characters for the player's team
+            owner.addCharacterToTheTeam(this: characterTmp) // Create the (3) characters for the player's team
         }
     }
     
-    func createCharacter() -> Character {       // To create a character
+    private func createCharacter() -> Character {       // To create a character
         var tmpCharacter : Character?
         print("Veuillez entrer le pseudo du personnage: ")
         let nameOfCharacter : String  = newPseudo()
@@ -167,13 +171,13 @@ class StartTheGame {
         return tmpCharacter!
     }
     
-    func newPseudo() -> String {        // Get an unique string as name from the user
+    private func newPseudo() -> String {        // Get an unique string as name from the user
         var pseudo : String
         repeat { pseudo = getGivenValue() } while !isUnique(given: pseudo)
         return pseudo
     }
     
-    func getGivenValue() -> String {        // Get a string, often use as name, from the user.
+    private func getGivenValue() -> String {        // Get a string, often use as name, from the user.
         var name : String?
         name = readLine()
         while (name == nil || (name!).count < 3 || (name!).rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) != nil) {
@@ -183,14 +187,14 @@ class StartTheGame {
         return name!
     }
     
-    func isUnique(given : String) -> Bool {     // Check the unicity of a string among all players and all characters in the game.
+    private func isUnique(given : String) -> Bool {     // Check the unicity of a string among all players and all characters in the game.
         for one in players {
-            if one.pseudo == given {
+            if one.getPseudo() == given {
                 print("Le pseudo \(given) est utilisé par un joueur, veuillez en entrez un autre svp:")
                 return false
             }
-            for character in one.team {
-                if character.name == given {
+            for character in one.getTeam() {
+                if character.getName() == given {
                     print("Le pseudo \(given) est utilisé par un personnage, veuillez en entrez un autre svp:")
                     return false
                 }

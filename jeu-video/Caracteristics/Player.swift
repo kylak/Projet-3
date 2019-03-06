@@ -12,18 +12,30 @@ import Foundation
 
 class Player { // This class represents a game's real player.
     
-    var pseudo : String     // The player's pseudo used for the game.
-    var team : [Character]  // The player's team used to fight others player's characters.
+    private var pseudo : String     // The player's pseudo used for the game.
+    private var team : [Character]  // The player's team used to fight others player's characters.
+    
+    func getPseudo() -> String {  // getter
+        return pseudo
+    }
+    
+    func getTeam() -> [Character] {  // getter
+        return team
+    }
+    
+    func addCharacterToTheTeam(this char : Character) {  // Function to add one character to the player's team
+         team.append(char)
+    }
 
-    init(name:String, teamPlayer : [Character]) {    // The
+    init(name:String, teamPlayer : [Character]) {
         pseudo = name
         team = teamPlayer
     }
     
-    func getCharactersAlive () -> [Character] {        // Return the characters alive from the player's team.
+    private func getCharactersAlive () -> [Character] {        // Return the characters alive from the player's team.
         var teamAlive : [Character] = []    // The team that will be returned
         for char in team {
-            if (char.LifePoint > 0) {
+            if (char.getLifePoint() > 0) {
                 teamAlive.append(char)
             }
         }
@@ -32,7 +44,7 @@ class Player { // This class represents a game's real player.
     
     func isAllDead () -> Bool {     // Return if all the player's team characters are dead or not.
         for char in team {
-            if (char.LifePoint > 0) {
+            if (char.getLifePoint() > 0) {
                 return false
             }
         }
@@ -54,24 +66,24 @@ class Player { // This class represents a game's real player.
             print("Veuillez entrer un chiffre correspondant à un des personnages ci-dessus: ")
             indexer =  Int(readLine()!)
         }
-        print("\(teamChosen[indexer! - 1].name) a été choisi.")
+        print("\(teamChosen[indexer! - 1].getName()) a été choisi.")
         return teamChosen[indexer! - 1]
     }
     
     // This function is used to describe a set of characters often the player's team. It's useful for select a character when it's our time to play.
-    func describeTeam(teamGiven : [Character]) {
+    private func describeTeam(teamGiven : [Character]) {
         var index : Int = 1     // The index of the character used to be able to select it.
         for i in teamGiven {
             print("- Entrez '\(index)' pour choisir le personnage suivant: ")
             i.describe()
-            if (i.weaponUsedByDefault != nil) {
+            if (i.getWeaponUsedByDefault() != nil) {
                 print("\t\t• Arme(s):")
-                i.weaponUsedByDefault!.describe()
+                i.getWeaponUsedByDefault()!.describe()
             }
             else { print("\t\t• Sans armes") }
-            if (i.powerUsedByDefault != nil) {
+            if (i.getPowerUsedByDefault() != nil) {
                 print("\t\t• Pouvoir(s):") // display any power information
-                i.powerUsedByDefault!.describe()
+                i.getPowerUsedByDefault()!.describe()
             }
             else { print("\t\t• Sans pouvoirs") }
             index += 1

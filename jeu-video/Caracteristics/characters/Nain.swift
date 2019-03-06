@@ -14,7 +14,7 @@ class Nain:Character {      // This class represents a nain
     
     init(name:String) {
         super.init(name:name, life:40, defense: 100)
-        weapon.append(Axe(damage: 25, levelMinimumAuthorized: 1, price: 0))
-        weaponUsedByDefault = weapon[0]
+        addWeapon(this: Axe(damage: 25, levelMinimumAuthorized: 1, price: 0))
+        setWeaponUsedByDefault(this: getWeapon()[0]!)
     }
 }

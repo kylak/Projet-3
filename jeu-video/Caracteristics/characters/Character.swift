@@ -10,20 +10,92 @@ import Foundation
 
 class Character {       // This class is the character's class mother.
 
-    var name:String     // The character's name
-    var LifePoint:Int       // The total life point of the character
-    var DefensePoint:Int        // The total defense point of the character
+    private var name:String     // The character's name
+    private var LifePoint:Int       // The total life point of the character
+    private var DefensePoint:Int        // The total defense point of the character
     
-    var currentLifePoint:Int        // The current life point of the character
-    var currentDefensePoint:Int     // The current defense point of the character
+    private var currentLifePoint:Int        // The current life point of the character
+    private var currentDefensePoint:Int     // The current defense point of the character
     
     // For characters carrying weapon(s)
-    var weapon : [Weapon?]          // The weapon's inventory of the character
-    var weaponUsedByDefault : Weapon? // the weapon chosen for combat
+    private var weapon : [Weapon?]          // The weapon's inventory of the character
+    private var weaponUsedByDefault : Weapon? // the weapon chosen for combat
     
     // For characters using power(s)
-    var power : [Power?]        // The power's inventory of the character
-    var powerUsedByDefault : Power? // the power chosen for the fight time
+    private var power : [Power?]        // The power's inventory of the character
+    private var powerUsedByDefault : Power? // the power chosen for the fight time
+    
+    // Getter
+    
+    func getName() -> String {  // getter
+        return name
+    }
+    
+    func getLifePoint() -> Int {    // getter
+        return LifePoint
+    }
+    
+    func geDefense() -> Int {   // getter
+        return DefensePoint
+    }
+    
+    func getCurrentLifePoint() -> Int { // getter
+        return currentLifePoint
+    }
+    
+    func getCurrentDefensePoint() -> Int {     // getter
+        return currentDefensePoint
+    }
+    
+    func getWeapon() -> [Weapon?] {     // getter
+        return weapon
+    }
+    
+    func getWeapon(index : Int) -> Weapon? {     // getter
+        if(index >= 0 && index < weapon.count){
+            return weapon[index]
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func addWeapon(this weap : Weapon) {  // Function to add one character to the player's team
+        weapon.append(weap)
+    }
+    
+    func getWeaponUsedByDefault() -> Weapon? {      // getter
+        return weaponUsedByDefault
+    }
+    
+    func setWeaponUsedByDefault(this weap : Weapon) {      // getter
+        weaponUsedByDefault = weap
+    }
+    
+    func getPower() -> [Power?] {      // getter
+        return power
+    }
+    
+    func getPower(index : Int) -> Power? {     // getter
+        if(index >= 0 && index < power.count){
+            return power[index]
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func addPower(this: Power?) {
+        power.append(this)
+    }
+    
+    func getPowerUsedByDefault() -> Power? {      // getter
+        return powerUsedByDefault
+    }
+    
+    func setPowerUsedByDefault(this: Power?) {
+        powerUsedByDefault = this
+    }
     
     // ( A character can have weapon(s) and power(s) )
     
@@ -52,11 +124,11 @@ class Character {       // This class is the character's class mother.
         }
     }
     
-    func fight(to : Character) {        // This function is used to make a character fighting
+    private func fight(to : Character) {        // This function is used to make a character fighting
         if (weaponUsedByDefault != nil) {
-            if (weaponUsedByDefault!.damage < to.LifePoint) {
-                to.currentLifePoint -= weaponUsedByDefault!.damage
-                print("-> \(name) a ôté \(weaponUsedByDefault!.damage) point de vie à \(to.name).\n")
+            if (weaponUsedByDefault!.getDamage() < to.LifePoint) {
+                to.currentLifePoint -= weaponUsedByDefault!.getDamage()
+                print("-> \(name) a ôté \(weaponUsedByDefault!.getDamage()) point de vie à \(to.name).\n")
             }
             else {
                 to.currentLifePoint = 0
@@ -68,7 +140,7 @@ class Character {       // This class is the character's class mother.
         }
     }
     
-    func heal(to : Character) {     // This function is used to make a character healing
+    private func heal(to : Character) {     // This function is used to make a character healing
         if (to.currentLifePoint < to.LifePoint) {
             if (powerUsedByDefault != nil && powerUsedByDefault!.giveLifePoint != nil) {
                 to.currentLifePoint += powerUsedByDefault!.giveLifePoint!

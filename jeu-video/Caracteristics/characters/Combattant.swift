@@ -14,7 +14,7 @@ class Combattant:Character {        // This class represents combattant
 
     init(name:String) {
         super.init(name:name, life:100, defense: 100)
-        weapon.append(Sword(damage: 10, levelMinimumAuthorized: 1, price: 30))
-        weaponUsedByDefault = weapon[0]
+        addWeapon(this: Sword(damage: 10, levelMinimumAuthorized: 1, price: 30))
+        setWeaponUsedByDefault(this: getWeapon(index: 0)!)
     }
 }

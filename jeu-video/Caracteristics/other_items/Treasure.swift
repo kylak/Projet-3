@@ -28,13 +28,13 @@ class Treasure {        // This class represents treasures that you can find ran
     }
     
     // This function create the item inside of the treasure: weapon or healing gift
-    static func generateNewItem () -> Bool { // "True" for a weapon or "False" for a power
+    private static func generateNewItem () -> Bool { // "True" for a weapon or "False" for a power
         let number = Int.random(in: 0 ..< 4) // either 0, 1, 2 or 3
         if (number == 2) { return false } // 2 means it's a power
         return true
     }
     
-    static func open() { // to open the treasure
+    private static func open() { // to open the treasure
         var choice : String
         repeat {
             choice =  readLine()!
@@ -48,7 +48,7 @@ class Treasure {        // This class represents treasures that you can find ran
     }
     
     // This function says if the item can be taken by the character: healing only for mage and weapon only for the others.
-    static func canGiftBeCarry(byThis character : Character,  dependingOf itemIsWeapon: Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) -> Bool {
+    private static func canGiftBeCarry(byThis character : Character,  dependingOf itemIsWeapon: Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) -> Bool {
         var canGiftBeCarry : Bool = false
         if (itemIsWeapon && String(describing: type(of: character)) != "Mage" && itemPossibility1 != nil) {
             canGiftBeCarry = true
@@ -60,19 +60,19 @@ class Treasure {        // This class represents treasures that you can find ran
         if (itemIsWeapon) {
             itemDescription(isAWeapon: true, itemPossibility1: itemPossibility1, itemPossibility2: nil)
             if (canGiftBeCarry == true) {
-                print("\(character.name) est apte à avoir cette arme !")
+                print("\(character.getName()) est apte à avoir cette arme !")
             }
             else {
-                print("\(character.name) ne peut pas porter une arme de ce type.\n")
+                print("\(character.getName()) ne peut pas porter une arme de ce type.\n")
             }
         }
         else {
             itemDescription(isAWeapon: false, itemPossibility1: nil, itemPossibility2: itemPossibility2)
             if(canGiftBeCarry == true) {
-                print("\(character.name) est apte à avoir ce pouvoir ! Ce povuoir a donc été ajoutée à \(character.name).")
+                print("\(character.getName()) est apte à avoir ce pouvoir ! Ce povuoir a donc été ajoutée à \(character.getName()).")
             }
             else {
-                print("\(character.name) ne peut pas utiliser ce pouvoir.\n")
+                print("\(character.getName()) ne peut pas utiliser ce pouvoir.\n")
             }
         }
         return canGiftBeCarry
@@ -80,11 +80,11 @@ class Treasure {        // This class represents treasures that you can find ran
     
     
     // This function is used to inform the character on the item's caracteristics
-    static func itemDescription(isAWeapon : Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) {
+    private static func itemDescription(isAWeapon : Bool, itemPossibility1: Weapon?, itemPossibility2 : Power?) {
         if(isAWeapon) {
             print("L'item provenant du coffre est l'arme suivante: ")
             print("\t› " + String(describing: type(of: itemPossibility1!)) + ":")
-            print("\t\t- Dégat: \(itemPossibility1!.damage)")
+            print("\t\t- Dégat: \(itemPossibility1!.getDamage())")
         }
         else {
             print("L'item provenant du coffre est le pouvoir suivant: ")
@@ -102,7 +102,7 @@ class Treasure {        // This class represents treasures that you can find ran
     }
     
     // This function is used by the character to take the item
-    static func getTheGift(dependingOf itemIsWeapon: Bool, itemPossibility1 : Weapon?, itemPossibility2 : Power?, forThis character : Character ) {
+    private static func getTheGift(dependingOf itemIsWeapon: Bool, itemPossibility1 : Weapon?, itemPossibility2 : Power?, forThis character : Character ) {
         if (itemIsWeapon && itemPossibility1 != nil) {
             forWeaponGift(weaponGiven: itemPossibility1!, character: character)
         }
@@ -112,20 +112,20 @@ class Treasure {        // This class represents treasures that you can find ran
     }
     
     // This function is used by the character to take the item in the case where it's a weapon
-    static func forWeaponGift (weaponGiven : Weapon, character : Character) {
-        print("Voulez-vous que \(character.name) utilise cette arme pour combattre ? il s'agira alors dans ce cas de son arme par défaut.")
+    private static func forWeaponGift (weaponGiven : Weapon, character : Character) {
+        print("Voulez-vous que \(character.getName()) utilise cette arme pour combattre ? il s'agira alors dans ce cas de son arme par défaut.")
         print("Entrez 'o' pour répondre par l'affirmative ou 'n' pour la négative :")
         var choice : String
         repeat {
             choice =  readLine()!
             if choice == "o" {
-                character.weapon.append(weaponGiven)
-                character.weaponUsedByDefault = weaponGiven
-                print("\(character.name) porte désormais cette arme, de plus elle a été ajoutée à votre inventaire.")
+                character.addWeapon(this: weaponGiven)
+                character.setWeaponUsedByDefault(this: weaponGiven)
+                print("\(character.getName()) porte désormais cette arme, de plus elle a été ajoutée à votre inventaire.")
             }
             else if choice == "n" {
-                character.weapon.append(weaponGiven)
-                print("Arme ajoutée à l'inventaire de \(character.name).")
+                character.addWeapon(this: weaponGiven)
+                print("Arme ajoutée à l'inventaire de \(character.getName()).")
             }
             else {
                 print("Caractère non reconnu.\nEntrez 'o' pour répondre par l'affirmative! ou 'n' pour la négative :")
@@ -133,21 +133,23 @@ class Treasure {        // This class represents treasures that you can find ran
         } while (choice != "o" && choice != "n")
     }
     
+    //MARK: Section 1
+    
     // This function is used by the character to take the item in the case where it's a power
-    static func forPowerGift (powerGiven : Power, character : Character) {
-        print("Voulez-vous que \(character.name) utilise ce pouvoir en tant qu'action par défaut ?")
+    private static func forPowerGift (powerGiven : Power, character : Character) {
+        print("Voulez-vous que \(character.getName()) utilise ce pouvoir en tant qu'action par défaut ?")
         print("Entrez 'o' pour répondre par l'affirmative ou 'n' pour la négative :")
         var choice : String
         repeat {
             choice =  readLine()!
             if choice == "o" {
-                character.power.append(powerGiven)
-                character.powerUsedByDefault = powerGiven
-                print("\(character.name) utilisere désormais par défaut ce nouveau pouvoir.")
+                character.addPower(this: powerGiven)
+                character.setPowerUsedByDefault(this: powerGiven)
+                print("\(character.getName()) utilisere désormais par défaut ce nouveau pouvoir.")
             }
             else if choice == "n" {
-                character.power.append(powerGiven)
-                print("\(character.name) a un nouveau pouvoir !")
+                character.addPower(this: powerGiven)
+                print("\(character.getName()) a un nouveau pouvoir !")
             }
             else {
                 print("Caractère non reconnu.\nEntrez 'o' pour répondre par l'affirmative ou 'n' pour la négative :")

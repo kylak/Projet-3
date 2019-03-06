@@ -8,4 +8,4 @@
 
 import Foundation
 
-var newGame = StartTheGame() //     Execute the game.
+private var newGame = GameManager() //     Execute the game.

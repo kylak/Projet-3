@@ -17,7 +17,7 @@ class Mage:Character {      // This class represents a mage
         let healing : Power = Power(name: "Guérison")
         healing.giveLifePoint = 10
         healing.giveDefensePoint = 2
-        power.append(healing)
-        powerUsedByDefault = power[0] // healing
+        addPower(this: healing)
+        setPowerUsedByDefault(this: getPower(index: 0)) // healing
     }
 }

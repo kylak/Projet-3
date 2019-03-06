@@ -10,10 +10,14 @@ import Foundation
 
 class Weapon {      // This class is the weapon's class mother.
     
-    var damage:Int       // The damage point it hurts.
-    var typeOfCharacterAuthorized: [Character]      // Whose can carry this weapon.
-    var levelMinimumAuthorized:Int      // What is the minimum level for carry this weapon.
-    var price:Int       // The price of this weapon (unused at that time).
+    private var damage:Int       // The damage point it hurts.
+    private var typeOfCharacterAuthorized: [Character]      // Whose can carry this weapon.
+    private var levelMinimumAuthorized:Int      // What is the minimum level for carry this weapon.
+    private var price:Int       // The price of this weapon (unused at that time).
+    
+    func getDamage() -> Int {
+        return damage
+    }
     
     init(damage:Int, typeOfCharacterAuthorized:[Character], levelMinimumAuthorized:Int, price:Int) {
         self.damage = damage
