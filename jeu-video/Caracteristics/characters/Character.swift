@@ -115,32 +115,36 @@ class Character {       // This class is the character's class mother.
     
     // MARK: ACTION METHODS
     
-    func act(to: Character) {       // This function is used to make a character fighting or healing an other.
+    // This function is used to make a character fighting or healing an other.
+    func act(to: Character) -> Bool {       // It returns true only if a character dies.
         if (String(describing: type(of: self)) == "Mage") { // It heals
-            heal(to : to)
+            return heal(to : to)
         }
         else { // It fights
-            fight(to : to)
+            return fight(to : to)
         }
     }
     
-    private func fight(to : Character) {        // This function is used to make a character fighting
+    private func fight(to : Character) -> Bool {        // This function is used to make a character fighting
         if (weaponUsedByDefault != nil) {
             if (weaponUsedByDefault!.getDamage() < to.currentLifePoint) {
                 to.currentLifePoint -= weaponUsedByDefault!.getDamage()
                 print("-> \(name) a ôté \(weaponUsedByDefault!.getDamage()) point de vie à \(to.name).\n")
+                return false
             }
             else {
                 to.currentLifePoint = 0
-                print("-> \(name) a achevé \(to.name).")
+                print(("-> \(name) a achevé \(to.name).").backgroundColor(.red))
+                return true
             }
         }
         else { // For example with the Colosse character (he doesn't fight)
             print("-> \(name) n'a ôté aucun point de vie à \(to.name) car aucune arme de combat n'a été trouvé sur \(name).\n")
+            return false
         }
     }
     
-    private func heal(to : Character) {     // This function is used to make a character healing
+    private func heal(to : Character) -> Bool {     // This function is used to make a character healing
         if (to.currentLifePoint < to.LifePoint) {
             if (powerUsedByDefault != nil && powerUsedByDefault!.getGiveLifePoint() != nil) {
                 to.currentLifePoint += powerUsedByDefault!.getGiveLifePoint()!
@@ -155,17 +159,19 @@ class Character {       // This class is the character's class mother.
                 to.currentDefensePoint += powerUsedByDefault!.getGiveDefensePoint()!
                 print("-> \(name) a ajouté \(powerUsedByDefault!.getGiveDefensePoint()!) points de défense à \(to.name).\n")
             }
+            return false
         }
         else {
             print("-> \(to.name) a déjà tous ses points de défense.\n")
+            return false
         }
     }
     
      // MARK: OTHER
     
     func describe() {       // This function is used to describe the caracterics of the character.
-        print("\t- \(name), de type " + String(describing: type(of: self)) + ":")
-        print("\t\t• \(currentLifePoint) de point de vie.")
-        print("\t\t• \(currentDefensePoint) point de défense.")
+        print("\t\t\t- \(name), de type " + String(describing: type(of: self)) + ":")
+        print("\t\t\t\t• \(currentLifePoint) de point de vie.")
+        print("\t\t\t\t• \(currentDefensePoint) point de défense.")
     }
 }

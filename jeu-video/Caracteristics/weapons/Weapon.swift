@@ -42,7 +42,7 @@ class Weapon {      // This class is the weapon's class mother.
     // MARK: OTHER
     
     func describe() {       // This function is used to describe the caracterics of the weapon.
-        print("\t\t\t› " + String(describing: type(of: self)) + ":")
-        print("\t\t\t\t- Dégat: \(self.damage)")
+        print("\t\t\t\t\t› " + String(describing: type(of: self)) + ":")
+        print("\t\t\t\t\t\t- Dégat: \(self.damage)")
     }
 }

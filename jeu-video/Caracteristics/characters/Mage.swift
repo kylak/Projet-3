@@ -13,10 +13,10 @@ class Mage:Character {      // This class represents a mage
     // "Son talent ? Soigner les membres de son équipe."
     
     init(name:String) {
-        super.init(name:name, life:110, defense: 100)
+        super.init(name:name, life:30, defense: 100)
         let healing : Power = Power(name: "Guérison")
-        healing.giveLifePoint = 10
-        healing.giveDefensePoint = 2
+        healing.setGiveLifePoint(this: 10)
+        healing.setGiveDefensePoint(this: 2)
         addPower(this: healing)
         setPowerUsedByDefault(this: getPower(index: 0)) // healing
     }

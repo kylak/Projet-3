@@ -30,7 +30,7 @@ class Player { // This class represents a game's real player.
     private func getCharactersAlive () -> [Character] {        // Return the characters alive from the player's team.
         var teamAlive : [Character] = []    // The team that will be returned
         for char in team {
-            if (char.getLifePoint() > 0) {
+            if (char.getCurrentLifePoint() > 0) {
                 teamAlive.append(char)
             }
         }
@@ -54,7 +54,7 @@ class Player { // This class represents a game's real player.
     
     func isAllDead () -> Bool {     // Return if all the player's team characters are dead or not.
         for char in team {
-            if (char.getLifePoint() > 0) {
+            if (char.getCurrentLifePoint() > 0) {
                 return false
             }
         }
@@ -73,10 +73,10 @@ class Player { // This class represents a game's real player.
         var indexer : Int?      // Used to get the user choice about the character he wants.
         indexer =  Int(readLine()!)
         while indexer == nil || indexer! > teamChosen.count || indexer! < 1 {
-            print("Veuillez entrer un chiffre correspondant à un des personnages ci-dessus: ")
+            print("\t\tVeuillez entrer un chiffre correspondant à un des personnages ci-dessus: ".red())
             indexer =  Int(readLine()!)
         }
-        print("\(teamChosen[indexer! - 1].getName()) a été choisi.")
+        print("----------------> \(teamChosen[indexer! - 1].getName()) a été choisi.".foregroundColor(.orange1))
         return teamChosen[indexer! - 1]
     }
     
@@ -86,18 +86,18 @@ class Player { // This class represents a game's real player.
     private func describeTeam(teamGiven : [Character]) {
         var index : Int = 1     // The index of the character used to be able to select it.
         for i in teamGiven {
-            print("- Entrez '\(index)' pour choisir le personnage suivant: ")
+            print("\t\t- Entrez '\(index)' pour choisir le personnage suivant: ")
             i.describe()
             if (i.getWeaponUsedByDefault() != nil) {
-                print("\t\t• Arme(s):")
+                print("\t\t\t\t• Arme(s):")
                 i.getWeaponUsedByDefault()!.describe()
             }
-            else { print("\t\t• Sans armes") }
+            else { print("\t\t\t\t• Sans armes") }
             if (i.getPowerUsedByDefault() != nil) {
-                print("\t\t• Pouvoir(s):") // display any power information
+                print("\t\t\t\t• Pouvoir(s):") // display any power information
                 i.getPowerUsedByDefault()!.describe()
             }
-            else { print("\t\t• Sans pouvoirs") }
+            else { print("\t\t\t\t• Sans pouvoirs") }
             index += 1
         }
     }

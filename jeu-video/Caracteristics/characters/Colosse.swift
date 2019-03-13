@@ -13,7 +13,7 @@ class Colosse:Character {       // This class represents a colosse
     // "Imposant et très résistant, mais il ne vous fera pas bien mal"
     
     init(name:String){
-        super.init(name:name, life:150, defense:180)
+        super.init(name:name, life:10, defense:180)
     }
     
 }

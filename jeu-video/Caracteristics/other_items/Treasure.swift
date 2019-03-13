@@ -82,7 +82,7 @@ class Treasure {        // This class represents treasures that you can find ran
         else {
             itemDescription(isAWeapon: false, itemPossibility1: nil, itemPossibility2: itemPossibility2)
             if(canGiftBeCarry == true) {
-                print("\(character.getName()) est apte à avoir ce pouvoir ! Ce povuoir a donc été ajoutée à \(character.getName()).")
+                print("\(character.getName()) est apte à avoir ce pouvoir ! Ce pouvoir a donc été ajoutée à \(character.getName()).")
             }
             else {
                 print("\(character.getName()) ne peut pas utiliser ce pouvoir.\n")

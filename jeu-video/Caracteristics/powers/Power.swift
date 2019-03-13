@@ -59,18 +59,18 @@ class Power {       // This class is for all power a mage could have.
     // MARK: OTHER
     
     func describe() {        // This function is used to describe the caracterics of the power.
-        print("\t\t\t› \(name):")
+        print("\t\t\t\t\t› \(name):")
         if(giveLifePoint != nil) {
-            print("\t\t\t\t- Ajoute \(giveLifePoint!) points de vie.")
+            print("\t\t\t\t\t\t- Ajoute \(giveLifePoint!) points de vie.")
         }
-        else { print("\t\t\t\t- N'ajoute pas de point de vie.") }
+        else { print("\t\t\t\t\t\t- N'ajoute pas de point de vie.") }
         if(giveDefensePoint != nil) {
-            print("\t\t\t\t- Ajoute \(giveLifePoint!) points de défense.")
+            print("\t\t\t\t\t\t- Ajoute \(giveLifePoint!) points de défense.")
         }
-        else { print("\t\t\t\t- N'ajoute pas de point de défense.") }
+        else { print("\t\t\t\t\t\t- N'ajoute pas de point de défense.") }
         if(giveDamage != nil) {
-            print("\t\t\t\t- Dommage: \(giveDamage!)")
+            print("\t\t\t\t\t\t- Dommage: \(giveDamage!)")
         }
-        else { print("\t\t\t\t- Ne fait pas de dommage") }
+        else { print("\t\t\t\t\t\t- Ne fait pas de dommage") }
     }
 }

@@ -20,6 +20,7 @@
 		4F28A5A721F667DE0094C0B4 /* Nain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F28A59B21F667DE0094C0B4 /* Nain.swift */; };
 		4F28A5A821F667DE0094C0B4 /* Colosse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F28A59C21F667DE0094C0B4 /* Colosse.swift */; };
 		4F32848B21FECF0500646E86 /* GameCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F32848A21FECF0500646E86 /* GameCore.swift */; };
+		4F582B7F2232D0F700BB0ECA /* ColorizeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F582B7E2232D0F700BB0ECA /* ColorizeSwift.swift */; };
 		4F8BF90C221E9744000A7E15 /* Treasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BF90B221E9744000A7E15 /* Treasure.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		4F28A59B21F667DE0094C0B4 /* Nain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nain.swift; sourceTree = "<group>"; };
 		4F28A59C21F667DE0094C0B4 /* Colosse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colosse.swift; sourceTree = "<group>"; };
 		4F32848A21FECF0500646E86 /* GameCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCore.swift; sourceTree = "<group>"; };
+		4F582B7E2232D0F700BB0ECA /* ColorizeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorizeSwift.swift; sourceTree = "<group>"; };
 		4F8BF90B221E9744000A7E15 /* Treasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Treasure.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				4F8BF90B221E9744000A7E15 /* Treasure.swift */,
+				4F582B7E2232D0F700BB0ECA /* ColorizeSwift.swift */,
 			);
 			path = other_items;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				4F28A5A321F667DE0094C0B4 /* Sword.swift in Sources */,
 				4F28A5A421F667DE0094C0B4 /* Combattant.swift in Sources */,
 				4F28A5A821F667DE0094C0B4 /* Colosse.swift in Sources */,
+				4F582B7F2232D0F700BB0ECA /* ColorizeSwift.swift in Sources */,
 				4F28A5A621F667DE0094C0B4 /* Mage.swift in Sources */,
 				4F28A5A521F667DE0094C0B4 /* Character.swift in Sources */,
 				4F28A59F21F667DE0094C0B4 /* Power.swift in Sources */,

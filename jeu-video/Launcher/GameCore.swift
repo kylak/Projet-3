@@ -32,14 +32,14 @@ class GameCore {     // This class describe how the players play the game and ho
             indexOfThePlayingPlayer = nextPlayerIndex(after: indexOfThePlayingPlayer)
         } while(!gameEnded())
         winner = getTheWinner()
-        print("\n\(winner!.getPseudo()) a remporté la partie !\n")
+        print( "\n" + ( "\(winner!.getPseudo())".bold() + " a remporté la partie !\n" ).blink().green() )
     }
     
     private func turn(of currentPlayer : Int) {     // This method describes how a player's turn works
         let thePlayingPlayer : Player = (gameInformations.getPlayers())[currentPlayer]
-        print("---- C'est au tour de \(thePlayingPlayer.getPseudo()) ----")
+        print(("\n\t   C'est au tour de " + "\(thePlayingPlayer.getPseudo())".bold() + "\t\t").backgroundColor(.grey))
         let theNextPlayingPlayer : Player = (gameInformations.getPlayers())[nextPlayerIndex(after: currentPlayer)]
-        print("\(thePlayingPlayer.getPseudo()), choisisez un personnage de votre équipe pour guérir un de ses confrères ou alors pour combattre un personnage adverse: ")
+        print("\n\tChoisisez un personnage de " + "votre équipe ".bold() + "pour guérir un de ses confrères ou alors pour combattre un personnage adverse: ")
         let theFirstChosenCharacter : Character = thePlayingPlayer.chooseOneCharacter(onlyAliveCharacter: true)!
         var theSecondChosenCharacter : Character
         
@@ -48,21 +48,31 @@ class GameCore {     // This class describe how the players play the game and ho
         }
         
         if (String(describing: type(of: theFirstChosenCharacter)) == "Mage") {
-            print("\(thePlayingPlayer.getPseudo()), choisisez un personnage de votre équipe que le mage guérira: ")
+            print("\n\tChoisisez un personnage de votre équipe que le mage guérira: ")
             theSecondChosenCharacter = thePlayingPlayer.chooseOneCharacter(onlyAliveCharacter: true)!
         }
         else {
-            print("\(thePlayingPlayer.getPseudo()), choisisez à présent un personnage de l'équipe de \(theNextPlayingPlayer.getPseudo()) à combattre: ")
+            print("\n\tChoisisez à présent un personnage de " + "l'équipe de \(theNextPlayingPlayer.getPseudo())".bold() + " à combattre: ")
             theSecondChosenCharacter = theNextPlayingPlayer.chooseOneCharacter(onlyAliveCharacter: true)!
         }
-        theFirstChosenCharacter.act(to: theSecondChosenCharacter)
+        let isDead : Bool = theFirstChosenCharacter.act(to: theSecondChosenCharacter)
+        if (isDead && theNextPlayingPlayer.isAllDead()) {
+            print(((theNextPlayingPlayer.getPseudo()).bold() + " a perdu, tous ses personnages sont K.O !").red())
+        }
     }
     
-    private func nextPlayerIndex (after this : Int) -> Int {        // Give the next player index
+    private func nextPlayerIndex (after this : Int) -> Int { // Give the next player index
+        var nextPlayer = 0
         if(this == gameInformations.getPlayers().count - 1) {
-            return 0
+            nextPlayer = 0
         }
-        return this + 1
+        else {
+            nextPlayer = this + 1
+        }
+        if(gameInformations.getPlayers()[nextPlayer].isAllDead()) {
+            return nextPlayerIndex(after: nextPlayer)
+        }
+        return nextPlayer
     }
     
     private func gameEnded () -> Bool {     // Says if the game has ended
